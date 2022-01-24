@@ -102,7 +102,7 @@ class PlayService():
                 if(self.check_win(player)):
                     print(f'Player {player.name} has won the game')
                     self.number_of_players-=1
-                    if MULTIPLE_WINNERS:
+                    if PlayService.MULTIPLE_WINNERS:
                         self.players.remove(player)
                     else:
                         break
