@@ -15,7 +15,7 @@ class PlayService():
         self.snakes_positions = snakes_positions
         self.ladders_positions = ladders_positions
         self.board_size = board_size
-        self.number_of_winners = len(players)-1
+        self.number_of_players = len(players)
         self.number_of_dices = number_of_dices
 
         for head,tail in snakes_positions.items():
@@ -40,7 +40,7 @@ class PlayService():
         return dice_value
 
     def check_win(self, player):
-        if player.get_position()==self.board.size:
+        if player.get_position()==self.board_size:
             return True
         
         return False
@@ -59,12 +59,12 @@ class PlayService():
 
     def play(self):
 
-        while self.number_of_winners>0:
+        while self.number_of_players>1:
             for player in self.players:
                 current_position = player.get_position()
                 dice_value = self.roll_dice()
                 next_position = current_position + dice_value
-                if next_position > 100:
+                if next_position > self.board_size:
                     print(f'Player {player.name} rolled a {dice_value} to move from {current_position} to {current_position}')
                     continue
                 while(True):
@@ -84,9 +84,10 @@ class PlayService():
                 print(f'Player {player.name} rolled a {dice_value} has moved from {current_position} to {next_position}')
                 if(self.check_win(player)):
                     print(f'Player {player.name} has won the game')
-                    self.number_of_winners-=1
+                    self.number_of_players-=1
+                    self.players.remove(player)
                 
-                if not self.number_of_winners:
+                if self.number_of_players==1:
                     break
                 
 

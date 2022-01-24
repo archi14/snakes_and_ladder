@@ -1,6 +1,7 @@
 from PlayService import  PlayService
 
 BOARD_SIZE = 100
+
 def get_input():
     number_of_snakes = int(input())
     snakes_positions = dict()
