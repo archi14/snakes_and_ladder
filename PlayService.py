@@ -5,8 +5,9 @@ from Ladder      import Ladder
 from Player      import Player
 from Board       import Board
 
-class PlayService():
 
+class PlayService():
+    multiple_sixes=False
     def __init__(self, board_size, snakes_positions=dict(), ladders_positions=dict(), players=[], number_of_dices=1):
         
         self.snakes = []
@@ -57,13 +58,32 @@ class PlayService():
         
         return False
 
+    def move_player(self, current_position, dice_value):
+        next_position = current_position + dice_value
+        if next_position > self.board_size:
+            return current_position
+            while(True):
+                snake_or_ladder = False
+                if(self.is_snake(next_position)):
+                    next_position = self.snakes_positions[next_position]
+                    snake_or_ladder = True
+                    
+                if(self.is_ladder(next_position)):
+                    next_position = self.ladders_positions[next_position]
+                    snake_or_ladder = True
+                    
+                if not snake_or_ladder:
+                    break
+        
+        return next_position
+
     def play(self):
 
         while self.number_of_players>1:
             for player in self.players:
                 current_position = player.get_position()
                 dice_value = self.roll_dice()
-                if(dice_value==6):
+                if(dice_value==6 and PlayService.multiple_sixes):
                     count=1
                     while(True):
                         value = self.roll_dice()
@@ -77,23 +97,7 @@ class PlayService():
                             break
 
                          
-                next_position = current_position + dice_value
-                if next_position > self.board_size:
-                    print(f'Player {player.name} rolled a {dice_value} to move from {current_position} to {current_position}')
-                    continue
-                while(True):
-                    snake_or_ladder = False
-                    if(self.is_snake(next_position)):
-                        next_position = self.snakes_positions[next_position]
-                        snake_or_ladder = True
-                    
-                    if(self.is_ladder(next_position)):
-                        next_position = self.ladders_positions[next_position]
-                        snake_or_ladder = True
-                    
-                    if not snake_or_ladder:
-                        break
-            
+                next_position = self.move_player(current_position, dice_value)
                 player.updatePosition(next_position)
                 print(f'Player {player.name} rolled a {dice_value} has moved from {current_position} to {next_position}')
                 if(self.check_win(player)):
