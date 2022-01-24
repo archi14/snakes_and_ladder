@@ -1,5 +1,5 @@
 import random
-from Board import Board
+from Board       import Board
 from Snake       import Snake
 from Ladder      import Ladder
 from Player      import Player
@@ -63,6 +63,20 @@ class PlayService():
             for player in self.players:
                 current_position = player.get_position()
                 dice_value = self.roll_dice()
+                if(dice_value==6):
+                    count=1
+                    while(True):
+                        value = self.roll_dice()
+                        dice_value+=value
+                        if value == 6:
+                            count+=1
+                        else:
+                            break    
+                        if count==3:
+                            dice_value=0
+                            break
+
+                         
                 next_position = current_position + dice_value
                 if next_position > self.board_size:
                     print(f'Player {player.name} rolled a {dice_value} to move from {current_position} to {current_position}')
