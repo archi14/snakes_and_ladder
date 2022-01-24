@@ -1,15 +1,15 @@
-A python program to simulate the snakes and ladders games
-The program currently takes input in the format
-s -> number of snakes
-head, tail -> head and tail positions of s snakes
-l -> number of ladders
-start, end -> start and end positions of l ladders
-p -> number of players
-name -> name of n players
+A python program to simulate the snakes and ladders games</br>
+The program currently takes input in the format</br>
+s -> number of snakes</br>
+head, tail -> head and tail positions of s snakes</br>
+l -> number of ladders</br>
+start, end -> start and end positions of l ladders</br>
+p -> number of players</br>
+name -> name of n players</br>
 
 
 Example Input:
-9
+<code> 9
 62 5
 33 6
 49 9
@@ -31,8 +31,10 @@ Example Input:
 2
 Gaurav
 Sagar
+</code>
 
 Example output:
+<code>
 Player Gaurav rolled a 5 has moved from 0 to 5
 Player Sagar rolled a 3 has moved from 0 to 3
 Player Gaurav rolled a 1 has moved from 5 to 6
@@ -158,9 +160,9 @@ Player Sagar rolled a 4 to move from 97 to 97
 Player Gaurav rolled a 2 has moved from 76 to 78
 Player Sagar rolled a 3 has moved from 97 to 100
 Player Sagar has won the game
+</code>
 
-
-#Important points:
+Important points:
 1. Game is played until one player remains to win
 2. the number of dice to be used can be specified, default is one.
 3. The size of board can be specified, default is 100
