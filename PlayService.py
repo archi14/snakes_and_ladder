@@ -1,0 +1,92 @@
+import random
+from Board import Board
+from Snake       import Snake
+from Ladder      import Ladder
+from Player      import Player
+from Board       import Board
+
+class PlayService():
+
+    def __init__(self, board_size, snakes_positions=dict(), ladders_positions=dict(), players=[], number_of_dices=1):
+        
+        self.snakes = []
+        self.ladders = []
+        self.players = []
+        self.snakes_positions = snakes_positions
+        self.ladders_positions = ladders_positions
+        self.board_size = board_size
+        self.number_of_winners = len(players)-1
+        self.number_of_dices = number_of_dices
+
+        for head,tail in snakes_positions.items():
+            snake = Snake(head, tail)
+            self.snakes.append(snake)
+
+        for start,end in ladders_positions.items():
+            ladder = Ladder(start, end)
+            self.ladders.append(ladder)
+        
+        for player_name in players:
+            player = Player(player_name)
+            self.players.append(player)
+
+        self.board = Board(self.board_size, self.snakes, self.ladders,  self.players)
+       
+
+    def roll_dice(self):
+        dice_value = 0
+        for i in range(self.number_of_dices):
+            dice_value+=int(random.random()*6+1)
+        return dice_value
+
+    def check_win(self, player):
+        if player.get_position()==self.board.size:
+            return True
+        
+        return False
+
+    def is_snake(self, position):
+
+        if position in self.snakes_positions.keys():
+            return True
+        return False
+
+    def is_ladder(self, position):
+        if position in self.ladders_positions.keys():
+            return True
+        
+        return False
+
+    def play(self):
+
+        while self.number_of_winners>0:
+            for player in self.players:
+                current_position = player.get_position()
+                dice_value = self.roll_dice()
+                next_position = current_position + dice_value
+                if next_position > 100:
+                    print(f'Player {player.name} rolled a {dice_value} to move from {current_position} to {current_position}')
+                    continue
+                while(True):
+                    snake_or_ladder = False
+                    if(self.is_snake(next_position)):
+                        next_position = self.snakes_positions[next_position]
+                        snake_or_ladder = True
+                    
+                    if(self.is_ladder(next_position)):
+                        next_position = self.ladders_positions[next_position]
+                        snake_or_ladder = True
+                    
+                    if not snake_or_ladder:
+                        break
+            
+                player.updatePosition(next_position)
+                print(f'Player {player.name} rolled a {dice_value} has moved from {current_position} to {next_position}')
+                if(self.check_win(player)):
+                    print(f'Player {player.name} has won the game')
+                    self.number_of_winners-=1
+                
+                if not self.number_of_winners:
+                    break
+                
+
