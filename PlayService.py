@@ -7,9 +7,9 @@ from Board       import Board
 
 
 class PlayService():
-    multiple_sixes=False
-    def __init__(self, board_size, snakes_positions=dict(), ladders_positions=dict(), players=[], number_of_dices=1):
-        
+    IS_MULTIPLE_SIXES_ALLOWED=False
+    MULTIPLE_WINNERS=False
+    def __init__(self, board_size, snakes_positions=dict(), ladders_positions=dict(), players=[], number_of_dices=1): 
         self.snakes = []
         self.ladders = []
         self.players = []
@@ -47,7 +47,6 @@ class PlayService():
         return False
 
     def is_snake(self, position):
-
         if position in self.snakes_positions.keys():
             return True
         return False
@@ -83,7 +82,7 @@ class PlayService():
             for player in self.players:
                 current_position = player.get_position()
                 dice_value = self.roll_dice()
-                if(dice_value==6 and PlayService.multiple_sixes):
+                if dice_value==6 and PlayService.IS_MULTIPLE_SIXES_ALLOWED:
                     count=1
                     while(True):
                         value = self.roll_dice()
@@ -103,7 +102,10 @@ class PlayService():
                 if(self.check_win(player)):
                     print(f'Player {player.name} has won the game')
                     self.number_of_players-=1
-                    self.players.remove(player)
+                    if MULTIPLE_WINNERS:
+                        self.players.remove(player)
+                    else:
+                        break
                 
                 if self.number_of_players==1:
                     break
